@@ -3,21 +3,40 @@ package com.driver;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class Gmail extends Email {
-     ArrayList<Mail> Inbox = new ArrayList<>();
-     ArrayList<Mail> Trash = new ArrayList<>();
-    int inboxCapacity; //maximum number of mails inbox can store
-    //Inbox: Stores mails. Each mail has date (Date), sender (String), message (String). It is guaranteed that message is distinct for all mails.
-    //Trash: Stores mails. Each mail has date (Date), sender (String), message (String)
-    public Gmail(String emailId, int inboxCapacity) {
-     super(emailId);
-      this.inboxCapacity = inboxCapacity ;
 
-    }
+
+public class Gmail extends Email {
+
+    int inboxCapacity; //maximum number of mails inbox can store
 
     public Gmail(String emailId) {
         super(emailId);
     }
+    //Inbox: Stores mails. Each mail has date (Date), sender (String), message (String). It is guaranteed that message is distinct for all mails.
+    //Trash: Stores mails. Each mail has date (Date), sender (String), message (String)
+
+    public class Mail {
+        Date date ;
+        String sender;
+        String message;
+
+        public Mail(Date date, String sender, String message) {
+            this.date = date;
+            this.sender = sender;
+            this.message = message;
+        }
+    }
+
+    ArrayList<Mail> Inbox ;
+    ArrayList<Mail> Trash ;
+    public Gmail(String emailId, int inboxCapacity) {
+     super(emailId);
+      this.inboxCapacity = inboxCapacity ;
+        this.Inbox = new ArrayList<>();
+         this.Trash = new ArrayList<>();
+
+    }
+
 
 
     public void receiveMail(Date date, String sender, String message){
@@ -36,10 +55,10 @@ public class Gmail extends Email {
         // Each message is distinct
         // If the given message is found in any mail in the inbox, move the mail to trash, else do nothing
            for(int i=0 ;i<Inbox.size() ;i++){
-               Mail mail = Inbox.get(i);
-               if(mail.message.equals(message)){
-                   Trash.add(new Mail(mail.date , mail.sender , mail.message));
-                   Inbox.remove(mail);
+
+               if(Inbox.get(i).message.equals(message)){
+                   Trash.add(Inbox.remove(i));
+                 return;
                }
            }
     }
